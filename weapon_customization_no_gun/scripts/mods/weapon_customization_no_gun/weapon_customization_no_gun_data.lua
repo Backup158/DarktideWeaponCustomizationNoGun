@@ -11,6 +11,22 @@ return {
 				type = "checkbox",
 				default_value = false,
 			},
+			{
+				setting_id = "warning_widgets",
+				type = "group",
+				sub_widgets = {
+					{
+						setting_id = "show_warning_crosshair",
+						type = "checkbox",
+						default_value = true,
+					},
+					{
+						setting_id = "show_warning_laser",
+						type = "checkbox",
+						default_value = true,
+					},
+				},
+			},
 		}
 	}
 }

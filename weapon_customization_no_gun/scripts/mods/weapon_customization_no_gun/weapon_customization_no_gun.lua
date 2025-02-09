@@ -1,4 +1,5 @@
 local mod = get_mod("weapon_customization_no_gun")
+mod.version = "1.1"
 
 -- Variables from the EWC Template
 local table = table
@@ -11,8 +12,6 @@ local _item_ranged = _item.."/ranged"
 local _item_melee = _item.."/melee"
 local _item_minion = "content/items/weapons/minions"
 -- End EWC Template vars
-
-mod:info('WeaponCustomizationNoGun v1.0 loaded uwu nya :3')
 
 -- Prepend function from EWC Template
 table.prepend = function(t1, t2)
@@ -39,29 +38,60 @@ function mod.get_weapons()
 	}
 end
 
+-- Commands to disable warnings
+local command_acd = mod:localize("ack_crosshair_description")
+local command_acl = mod:localize("ack_laser_description")
+mod:command("ack_crosshair", command_acd, function ()
+    mod:set("show_warning_crosshair", false, false)
+end)
+mod:command("ack_laser", command_acl, function ()
+    mod:set("show_warning_laser", false, false)
+end)
+
+-- Function Execution
 function mod.on_all_mods_loaded()
+    mod:info("WeaponCustomizationNoGun v" .. mod.version .. " loaded uwu nya :3")
+
+    -- Checks for other mods loaded
     local wc = get_mod("weapon_customization")
     if not wc then
 		mod:error("Extended Weapon Customization mod is required")
 		return
 	end
-
     local mt = get_mod("weapon_customization_mt_stuff")
     if mt then
         mod:info("WeaponCustomizationNoGun: User has MT Plugin uwu nya :3")
     end
-
     local syn = get_mod("weapon_customization_syn_edits")
     if syn then
         mod:info("WeaponCustomizationNoGun: User has Syn Edits uwu nya :3")
     end
-    
+    local cr = get_mod("crosshair_remap")
+    if cr then
+        mod:info("WeaponCustomizationNoGun: User has Crosshair Remap uwu nya :3")
+    end
+
+    -- Warns users if settings are misconfigured
+    --  These are all checkboxes, so returned values are bool
+    local ewcDeactivateCrosshair = wc:get("mod_option_deactivate_crosshair_aiming")
+    local ewcDeactivateLaser = wc:get("mod_option_deactivate_laser_aiming")
+    local showWarningCrosshair = mod:get("show_warning_crosshair")
+    local showWarningLaser = mod:get("show_warning_laser")
+
+    if showWarningCrosshair and cr and ewcDeactivateCrosshair then
+        mod:echo_localized("warning_crosshair")
+    end
+    if showWarningLaser and ewcDeactivateLaser then
+        mod:echo_localized("warning_laser")
+    end
+
+    -- Initializing data before injection
     local debug = mod:get("enable_debug_mode")
     local weaponClasses = mod:get_weapons()
     
     -- ####################################################################
     -- CREATING THE ATTACHMENT SLOTS
-    --  If the weapon doesn't already have the slot assigned to it, create one so attachments can be injected to them
+    --  If the weapon doesn't already have sight_2 assigned to it, create the slot so attachments can be injected to them
     --  
     -- ####################################################################
     -- Compatibility patch: These slots are already added to these weapons by the MT plugin because of the helper sights
