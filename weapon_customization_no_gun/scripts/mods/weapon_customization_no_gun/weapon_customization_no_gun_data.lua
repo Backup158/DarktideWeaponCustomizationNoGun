@@ -16,6 +16,11 @@ return {
 				type = "group",
 				sub_widgets = {
 					{
+						setting_id = "show_warning_remap",
+						type = "checkbox",
+						default_value = true,
+					},
+					{
 						setting_id = "show_warning_crosshair",
 						type = "checkbox",
 						default_value = true,

@@ -1,5 +1,5 @@
 local mod = get_mod("weapon_customization_no_gun")
-mod.version = "1.1"
+mod.version = "1.1.1"
 
 -- Variables from the EWC Template
 local table = table
@@ -39,8 +39,12 @@ function mod.get_weapons()
 end
 
 -- Commands to disable warnings
+local command_acr = mod:localize("ack_remap_description")
 local command_acd = mod:localize("ack_crosshair_description")
 local command_acl = mod:localize("ack_laser_description")
+mod:command("ack_remap", command_acr, function ()
+    mod:set("show_warning_remap", false, false)
+end)
 mod:command("ack_crosshair", command_acd, function ()
     mod:set("show_warning_crosshair", false, false)
 end)
@@ -75,9 +79,13 @@ function mod.on_all_mods_loaded()
     --  These are all checkboxes, so returned values are bool
     local ewcDeactivateCrosshair = wc:get("mod_option_deactivate_crosshair_aiming")
     local ewcDeactivateLaser = wc:get("mod_option_deactivate_laser_aiming")
+    local showWarningRemap = mod:get("show_warning_remap")
     local showWarningCrosshair = mod:get("show_warning_crosshair")
     local showWarningLaser = mod:get("show_warning_laser")
 
+    if showWarningRemap and not cr then
+        mod:echo_localized("warning_remap")
+    end
     if showWarningCrosshair and cr and ewcDeactivateCrosshair then
         mod:echo_localized("warning_crosshair")
     end
