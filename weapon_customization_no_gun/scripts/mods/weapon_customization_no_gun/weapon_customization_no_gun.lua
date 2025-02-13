@@ -111,7 +111,7 @@ function mod.on_all_mods_loaded()
         wc.attachment.lasgun_p3_m1.sight_2 = {}
         wc.attachment.shotgun_p2_m1.sight_2 = {}
         wc.attachment.stubrevolver_p1_m1.sight_2 = {}
-        -- these 3 are in the plugin but they have a space before them for whatever reason
+        -- these 3 are in the plugin but they have a space before them for whatever reason and i'm too lazy to check if that's fine
         wc.attachment.bolter_p1_m1.sight_2 = {}
         wc.attachment.boltpistol_p1_m1.sight_2 = {}
         wc.attachment.laspistol_p1_m1.sight_2 = {}
@@ -139,10 +139,43 @@ function mod.on_all_mods_loaded()
                 mod:error("!!! Could not find table: wc.attachment."..weaponClass..".sight_2")
             end
         end
+        -- If this plugin is the one creating the sight_2 slot, there must be a default sight_2 that doesn't have the hidden viewmodel
+        local firstTime = false
+        if (weaponClass == "autopistol_p1_m1") or (weaponClass == "plasmagun_p1_m1") then
+            firstTime = true
+            if debug then
+                mod:info("    First time for: wc.attachment."..weaponClass..".sight_2")
+            end
+        elseif not syn and (weaponClass == "shotgun_p1_m1") then
+            firstTime = true
+            if debug then
+                mod:info("    First time without syn: wc.attachment."..weaponClass..".sight_2")
+            end
+        elseif not mt and ((weaponClass == "autogun_p1_m1") or (weaponClass == "lasgun_p1_m1") or (weaponClass == "lasgun_p2_m1") or (weaponClass == "lasgun_p3_m1") or (weaponClass == "shotgun_p2_m1") or (weaponClass == "stubrevolver_p1_m1") or (weaponClass == "bolter_p1_m1") or (weaponClass == "boltpistol_p1_m1") or (weaponClass == "laspistol_p1_m1")) then
+            firstTime = true
+            if debug then
+                mod:info("    First time without mt: wc.attachment."..weaponClass..".sight_2")
+            end
+        else
+            if debug then
+                mod:info("    NOT the first time for: wc.attachment."..weaponClass..".sight_2")
+            end
+        end
+        if debug then
+            mod:info("        "..tostring(firstTime))
+        end
+
         table.insert(
             wc.attachment[weaponClass].sight,
             {id = "no_gun_sight_invis_main", name = "No Viewmodel (No Sight)"}
         )
+        -- First time creating sight_2 for these, so I need a default unequipped
+        if firstTime then
+            table.insert(
+                wc.attachment[weaponClass].sight_2,
+                {id = "no_gun_sight_invis_default", name = "Default"}
+            )
+        end
         table.insert(
             wc.attachment[weaponClass].sight_2,
             {id = "no_gun_sight_invis", name = "No Viewmodel"}
@@ -169,6 +202,12 @@ function mod.on_all_mods_loaded()
             wc.attachment_models[weaponClass],
             {no_gun_sight_invis_main = {model = "", type = "sight", parent = "rail"} }
         )
+        if firstTime then
+            table.merge_recursive(
+                wc.attachment_models[weaponClass],
+                {no_gun_sight_invis_default = {model = "", type = "sight_2", parent = "sight"} }
+            )
+        end
         table.merge_recursive(
             wc.attachment_models[weaponClass],
             {no_gun_sight_invis = {model = "", type = "sight_2", parent = "sight"} }
@@ -197,6 +236,16 @@ function mod.on_all_mods_loaded()
                 },
             }
         )
+        if firstTime then
+            table.prepend(
+                wc.anchors[weaponClass].fixes, {
+                    {   dependencies = {"no_gun_sight_invis_default"},
+                        no_scope_offset =       { position = vector3_box(0, 0, 0.0), rotation = vector3_box(0, 0, 0) },
+                        scope_offset =          { position = vector3_box(0, 0, 0.0), rotation = vector3_box(0, 0, 0) },
+                    },
+                }
+            )
+        end
         table.prepend(
             wc.anchors[weaponClass].fixes, {
                 {   dependencies = {"no_gun_sight_invis"},
