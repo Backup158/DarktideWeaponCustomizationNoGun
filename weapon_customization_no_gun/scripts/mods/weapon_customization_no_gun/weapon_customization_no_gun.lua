@@ -1,5 +1,5 @@
 local mod = get_mod("weapon_customization_no_gun")
-mod.version = "1.2.0"
+mod.version = "1.2.2"
 
 -- Variables from the EWC Template
 local table = table
@@ -28,13 +28,13 @@ function mod.get_weapons()
         "bolter_p1_m1",
         "boltpistol_p1_m1",
 		"lasgun_p1_m1", -- Infantry
+        "lasgun_p2_m1", -- Helbore
+        "lasgun_p3_m1", -- Recon
 		"laspistol_p1_m1",
 		"plasmagun_p1_m1",
 		"shotgun_p1_m1", -- Combat
-	    "stubrevolver_p1_m1",
-		"lasgun_p2_m1", -- Helbore
 		"shotgun_p2_m1", -- Double Barrel
-		"lasgun_p3_m1", -- Recon
+        "stubrevolver_p1_m1",
 	}
 end
 
@@ -167,26 +167,26 @@ function mod.on_all_mods_loaded()
 
         table.insert(
             wc.attachment[weaponClass].sight,
-            {id = "no_gun_sight_invis_main", name = "No Viewmodel (No Sight)"}
+            {id = "no_gun_sight_invis_main", name = "No Viewmodel (No Sight)", no_randomize = true}
         )
         -- First time creating sight_2 for these, so I need a default unequipped
         if firstTime then
             table.insert(
                 wc.attachment[weaponClass].sight_2,
-                {id = "no_gun_sight_invis_default", name = "Default"}
+                {id = "no_gun_sight_invis_default", name = "Default", no_randomize = true}
             )
         end
         table.insert(
             wc.attachment[weaponClass].sight_2,
-            {id = "no_gun_sight_invis", name = "No Viewmodel"}
+            {id = "no_gun_sight_invis", name = "No Viewmodel", no_randomize = true}
         )
         table.insert(
             wc.attachment[weaponClass].sight_2,
-            {id = "no_gun_sight_invis_right", name = "No Viewmodel (Right)"}
+            {id = "no_gun_sight_invis_right", name = "No Viewmodel (Right)", no_randomize = true}
         )
         table.insert(
             wc.attachment[weaponClass].sight_2,
-            {id = "no_gun_sight_invis_left", name = "No Viewmodel (Left)"}
+            {id = "no_gun_sight_invis_left", name = "No Viewmodel (Left)", no_randomize = true}
         )
         -- ########################################
         -- Inject attachment model

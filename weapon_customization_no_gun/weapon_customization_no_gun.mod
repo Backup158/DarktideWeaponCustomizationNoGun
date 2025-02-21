@@ -16,6 +16,7 @@ return {
 		 "for_the_drip",
 	},
 	load_before = {
+		"weapon_customization_owo",
 		"weapon_customization_syn_edits",
 		"weapon_customization_mt_stuff",
 	},
