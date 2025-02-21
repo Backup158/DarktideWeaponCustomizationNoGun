@@ -64,15 +64,15 @@ function mod.on_all_mods_loaded()
 	end
     local mt = get_mod("weapon_customization_mt_stuff")
     if mt then
-        mod:info("WeaponCustomizationNoGun: User has MT Plugin uwu nya :3")
+        mod:info("User has MT Plugin uwu nya :3")
     end
     local syn = get_mod("weapon_customization_syn_edits")
     if syn then
-        mod:info("WeaponCustomizationNoGun: User has Syn Edits uwu nya :3")
+        mod:info("User has Syn Edits uwu nya :3")
     end
     local cr = get_mod("crosshair_remap")
     if cr then
-        mod:info("WeaponCustomizationNoGun: User has Crosshair Remap uwu nya :3")
+        mod:info("User has Crosshair Remap uwu nya :3")
     end
 
     -- Warns users if settings are misconfigured
@@ -111,7 +111,7 @@ function mod.on_all_mods_loaded()
         wc.attachment.lasgun_p3_m1.sight_2 = {}
         wc.attachment.shotgun_p2_m1.sight_2 = {}
         wc.attachment.stubrevolver_p1_m1.sight_2 = {}
-        -- these 3 are in the plugin but they have a space before them for whatever reason and i'm too lazy to check if that's fine
+        -- These 3 are in the plugin but they have a space before them for whatever reason. As of v10.24, this seems to add them fine, but I'll leave these segregated in case that becomes an issue
         wc.attachment.bolter_p1_m1.sight_2 = {}
         wc.attachment.boltpistol_p1_m1.sight_2 = {}
         wc.attachment.laspistol_p1_m1.sight_2 = {}
@@ -134,7 +134,7 @@ function mod.on_all_mods_loaded()
         -- ########################################
         if debug then
             if (type(wc.attachment[weaponClass].sight_2) == "table") then
-                mod:info("    Correct table found: wc.attachment."..weaponClass..".sight_2")
+                mod:info("Correct table found: wc.attachment."..weaponClass..".sight_2")
             else
                 mod:error("!!! Could not find table: wc.attachment."..weaponClass..".sight_2")
             end
@@ -144,25 +144,22 @@ function mod.on_all_mods_loaded()
         if (weaponClass == "autopistol_p1_m1") or (weaponClass == "plasmagun_p1_m1") then
             firstTime = true
             if debug then
-                mod:info("    First time for: wc.attachment."..weaponClass..".sight_2")
+                mod:info("First time for: wc.attachment."..weaponClass..".sight_2")
             end
         elseif not syn and (weaponClass == "shotgun_p1_m1") then
             firstTime = true
             if debug then
-                mod:info("    First time without syn: wc.attachment."..weaponClass..".sight_2")
+                mod:info("First time (no syn) for: wc.attachment."..weaponClass..".sight_2")
             end
         elseif not mt and ((weaponClass == "autogun_p1_m1") or (weaponClass == "lasgun_p1_m1") or (weaponClass == "lasgun_p2_m1") or (weaponClass == "lasgun_p3_m1") or (weaponClass == "shotgun_p2_m1") or (weaponClass == "stubrevolver_p1_m1") or (weaponClass == "bolter_p1_m1") or (weaponClass == "boltpistol_p1_m1") or (weaponClass == "laspistol_p1_m1")) then
             firstTime = true
             if debug then
-                mod:info("    First time without mt: wc.attachment."..weaponClass..".sight_2")
+                mod:info("First time (no mt) for: wc.attachment."..weaponClass..".sight_2")
             end
         else
             if debug then
-                mod:info("    NOT the first time for: wc.attachment."..weaponClass..".sight_2")
+                mod:info("NOT the first time for: wc.attachment."..weaponClass..".sight_2")
             end
-        end
-        if debug then
-            mod:info("        "..tostring(firstTime))
         end
 
         table.insert(
@@ -193,7 +190,7 @@ function mod.on_all_mods_loaded()
         -- ########################################
         if debug then
             if (type(wc.attachment_models[weaponClass]) == "table") then
-                mod:info("    Correct table found: wc.attachment_models."..weaponClass)
+                mod:info("Correct table found: wc.attachment_models."..weaponClass)
             else
                 mod:error("!!! Could not find table: wc.attachment."..weaponClass)
             end
@@ -290,84 +287,5 @@ function mod.on_all_mods_loaded()
             "no_gun_sight_invis_left"
         )
     end
-
-    --[[ ATTEMPTED TO AUTOMATE THIS
-        automatically adding entries just by passing a few parameters so i wouldnt have to repaste all these inserts
-        this took too long that i just gave up and brute forced it (ROCK SMASH)
-        really it'd just be reinventing the wheel
-
-
-    -- Inject attachment definitions loop
-    --  Based on base EWC, not MT
-    --  []  accessing the table contents as an associative array with bracket notation. trying to find the key matching a string
-    function mod.inject_attachment_definitions_base(weapon, slot, slot_table, definitions)
-        for _, attachment_inject in ipairs(definitions) do
-            def_id, def_name, def_model_table = attachment_inject[1][1], attachment_inject[1][2], attachment_inject[2]
-            if debug then
-                mod:info("injecting for "..weapon.." uwu nya")
-                mod:info("    "..def_id)
-                mod:info("    "..def_name)
-                -- mod:info("    "..def_model_table) -- this is a table so we're not printing
-            end
-            -- Inject attachment definition
-            if debug then
-                if (type(wc.attachment[weapon][slot]) == "table") then
-                    mod:info("    Correct table found: wc.attachment."..weapon.."."..slot)
-                else
-                    mod:error("!!! Could not find table: wc.attachment."..weapon.."."..slot)
-                end
-            end
-            table.insert(
-                wc.attachment[weapon][slot], 
-                {id = def_id, name = def_name}
-            )
-            -- Inject attachment model
-            if debug then
-                if (type(wc.attachment_models[weapon]) == "table") then
-                    mod:info("    Correct table found: wc.attachment_models."..weapon)
-                else
-                    mod:error("!!! Could not find table: wc.attachment_models."..weapon)
-                end
-            end
-            table.merge_recursive(
-                wc.attachment_models[weapon],
-                def_model_table
-            )
-            -- Inject fixes
-            table.prepend(
-                wc.anchors[weapon].fixes, {
-                    {   dependencies = {def_id},
-                        no_scope_offset =       { position = vector3_box(0, -10, -0.7), rotation = vector3_box(0, 0, 0) },
-                    },
-                }      
-            )
-            -- Inject attachment to the actual table
-            if debug then
-                if (type(wc[slot_table]) == "table") then
-                    mod:info("    Correct table found: wc."..slot_table)
-                else
-                    mod:error("!!! Could not find table: wc."..slot_table)
-                end
-            end
-            table.insert(
-                wc[slot_table],     -- inserting into sights, not just sight
-                def_id
-            )
-            
-        end
-    end
-    for _, weaponClass in ipairs(weaponClasses) do
-        mod.inject_attachment_definitions_base(weaponClass, "sight", "sights" {
-            {   {"no_gun_sight_invis", "No Viewmodel (No Sight)"}, 
-                { no_gun_sight_invis = {model = "", type = "sight", parent = "rail"} } 
-            },
-        })
-        mod.inject_attachment_definitions_base(weaponClass, "sight_2", "reflex_sights" {
-            {   {"no_gun_sight2_invis", "No Viewmodel"}, 
-                { no_gun_sight2_invis = {model = "", type = "sight_2", parent = "sight"} } 
-            },
-        })
-    end
-    ]]
 
 end
