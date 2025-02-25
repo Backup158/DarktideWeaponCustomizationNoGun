@@ -32,11 +32,13 @@ function mod.get_weapons()
         "lasgun_p2_m1", -- Helbore
         "lasgun_p3_m1", -- Recon
 		"laspistol_p1_m1",
+        --[[
         "ogryn_gauntlet_p1_m1",
         "ogryn_heavystubber_p1_m1",
         "ogryn_heavystubber_p2_m1",
         "ogryn_rippergun_p1_m1",
         "ogryn_thumper_p1_m1",
+        ]]
 		"plasmagun_p1_m1",
 		"shotgun_p1_m1", -- Combat
 		"shotgun_p2_m1", -- Double Barrel
@@ -110,21 +112,28 @@ function mod.on_all_mods_loaded()
     -- ####################################################################
     -- CREATING THE ATTACHMENT SLOTS
     --  If the weapon doesn't already have sight_2 assigned to it, create the slot so attachments can be injected to them
-    --      Creating them again would make the MT plugin's attachments in this slot unusable  
+    --      Creating them again would make the MT plugin's attachments in this slot unusable
+    --  Creating sight_1 for those that are missing them is sussy
+    --      For flamer, I could create sight_2 and equip it just fine even without a sight
+    --      For ogryn weapons, it would not budge, even if I tried to create a sight slot (which never showed up)
     -- ####################################################################
+    --[[
     wc.attachment.flamer_p1_m1.sight = {}
     wc.attachment.ogryn_gauntlet_p1_m1.sight = {}
     wc.attachment.ogryn_heavystubber_p1_m1.sight = {}
     wc.attachment.ogryn_heavystubber_p2_m1.sight = {}
     wc.attachment.ogryn_rippergun_p1_m1.sight = {}
     wc.attachment.ogryn_thumper_p1_m1.sight = {}
+    ]]
     
     wc.attachment.flamer_p1_m1.sight_2 = {}
+    --[[
     wc.attachment.ogryn_gauntlet_p1_m1.sight_2 = {}
     wc.attachment.ogryn_heavystubber_p1_m1.sight_2 = {}
     wc.attachment.ogryn_heavystubber_p2_m1.sight_2 = {}
     wc.attachment.ogryn_rippergun_p1_m1.sight_2 = {}
     wc.attachment.ogryn_thumper_p1_m1.sight_2 = {}
+    ]]
     wc.attachment.plasmagun_p1_m1.sight_2 = {}
     
     -- If using Ostracized without Objection, the MT plugin is already required there so no need to check
@@ -168,7 +177,7 @@ function mod.on_all_mods_loaded()
         end
         -- If this plugin is the one creating the sight_2 slot, there must be a default sight_2 that doesn't have the hidden viewmodel
         local firstTime = false
-        local firstTimeDouble = false
+        local missingMainSightSlot = false
         
         if not owo and (weaponClass == "autopistol_p1_m1") then
             firstTime = true
@@ -190,9 +199,10 @@ function mod.on_all_mods_loaded()
             if debug then
                 mod:info("First time for: wc.attachment."..weaponClass..".sight_2")
             end
-        elseif (weaponClass == "flamer_p1_m1") or (weaponClass == "ogryn_gauntlet_p1_m1") or (weaponClass == "ogryn_rippergun_p1_m1") or (weaponClass == "ogryn_heavystubber_p1_m1") or (weaponClass == "ogryn_heavystubber_p2_m1") or (weaponClass == "ogryn_thumper_p1_m1") then
+        --elseif (weaponClass == "flamer_p1_m1") or (weaponClass == "ogryn_gauntlet_p1_m1") or (weaponClass == "ogryn_rippergun_p1_m1") or (weaponClass == "ogryn_heavystubber_p1_m1") or (weaponClass == "ogryn_heavystubber_p2_m1") or (weaponClass == "ogryn_thumper_p1_m1") then
+        elseif (weaponClass == "flamer_p1_m1") then
             firstTime = true
-            firstTimeDouble = true
+            missingMainSightSlot = true
             if debug then
                 mod:info("First time for: wc.attachment."..weaponClass..".sight_2 AND sight")
             end
@@ -203,16 +213,20 @@ function mod.on_all_mods_loaded()
         end
 
         -- First time
-        if firstTimeDouble then
+        --[[
+        if missingMainSightSlot then
             table.insert(
                 wc.attachment[weaponClass].sight,
                 {id = "no_gun_sight_invis_main_default", name = "Default", no_randomize = false}
             )
         end
-        table.insert(
-            wc.attachment[weaponClass].sight,
-            {id = "no_gun_sight_invis_main", name = "No Viewmodel (No Sight)", no_randomize = true}
-        )
+        ]]
+        if not missingMainSightSlot then
+            table.insert(
+                wc.attachment[weaponClass].sight,
+                {id = "no_gun_sight_invis_main", name = "No Viewmodel (No Sight)", no_randomize = true}
+            )
+        end
         -- First time creating sight_2 for these, so I need a default unequipped
         if firstTime then
             table.insert(
@@ -242,16 +256,20 @@ function mod.on_all_mods_loaded()
                 mod:error("!!! Could not find table: wc.attachment."..weaponClass)
             end
         end
-        if firstTimeDouble then
+        --[[
+        if missingMainSightSlot then
             table.merge_recursive(
                 wc.attachment_models[weaponClass],
                 {no_gun_sight_invis_main_default = {model = "", type = "sight", parent = "receiver"} }
             )
         end
-        table.merge_recursive(
-            wc.attachment_models[weaponClass],
-            {no_gun_sight_invis_main = {model = "", type = "sight", parent = "rail"} }
-        )
+        ]]
+        if not missingMainSightSlot then
+            table.merge_recursive(
+                wc.attachment_models[weaponClass],
+                {no_gun_sight_invis_main = {model = "", type = "sight", parent = "rail"} }
+            )
+        end
         if firstTime then
             table.merge_recursive(
                 wc.attachment_models[weaponClass],
@@ -279,7 +297,8 @@ function mod.on_all_mods_loaded()
         --      For autoguns, the max recoil can make it so the bullets come from above the screen. But it's fine in the first half the magdump
         -- -30 puts the gun behind. Putting it too far will make trails disappear
         -- ########################################
-        if firstTimeDouble then
+        --[[
+        if missingMainSightSlot then
             table.prepend(
                 wc.anchors[weaponClass].fixes, {
                     {   dependencies = {"no_gun_sight_invis_main_default"},
@@ -289,13 +308,16 @@ function mod.on_all_mods_loaded()
                 }
             )
         end
-        table.prepend(
-            wc.anchors[weaponClass].fixes, {
-                {   dependencies = {"no_gun_sight_invis_main"},
-                    no_scope_offset =       { position = vector3_box(0, -30, -1.7), rotation = vector3_box(0, 0, 0) },
-                },
-            }
-        )
+        ]]
+        if not missingMainSightSlot then
+            table.prepend(
+                wc.anchors[weaponClass].fixes, {
+                    {   dependencies = {"no_gun_sight_invis_main"},
+                        no_scope_offset =       { position = vector3_box(0, -30, -1.7), rotation = vector3_box(0, 0, 0) },
+                    },
+                }
+            )
+        end
         if firstTime then
             table.prepend(
                 wc.anchors[weaponClass].fixes, {
@@ -333,16 +355,20 @@ function mod.on_all_mods_loaded()
         -- ########################################
         -- Inject attachment
         -- ########################################
-        if firstTimeDouble then
+        --[[
+        if missingMainSightSlot then
             table.insert(
                 wc.sights,
                 "no_gun_sight_invis_main_default"
             )
         end
-        table.insert(
-            wc.sights,
-            "no_gun_sight_invis_main"
-        )
+        ]]
+        if not missingMainSightSlot then
+            table.insert(
+                wc.sights,
+                "no_gun_sight_invis_main"
+            )
+        end
         if firstTime then
                 table.insert(
                 wc.reflex_sights,
