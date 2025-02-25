@@ -70,6 +70,10 @@ function mod.on_all_mods_loaded()
     if syn then
         mod:info("User has Syn Edits uwu nya :3")
     end
+    local owo = get_mod("weapon_customization_owo")
+    if owo then
+        mod:info("User has Ostracized without Objection uwu nya :3")
+    end
     local cr = get_mod("crosshair_remap")
     if cr then
         mod:info("User has Crosshair Remap uwu nya :3")
@@ -102,26 +106,28 @@ function mod.on_all_mods_loaded()
     --  If the weapon doesn't already have sight_2 assigned to it, create the slot so attachments can be injected to them
     --  
     -- ####################################################################
-    -- Compatibility patch: These slots are already added to these weapons by the MT plugin because of the helper sights
-    --      Creating them again would make the MT plugin's attachments in this slot unusable
-    if not mt then
-        wc.attachment.autogun_p1_m1.sight_2 = {}
-        wc.attachment.lasgun_p1_m1.sight_2 = {}
-        wc.attachment.lasgun_p2_m1.sight_2 = {}
-        wc.attachment.lasgun_p3_m1.sight_2 = {}
-        wc.attachment.shotgun_p2_m1.sight_2 = {}
-        wc.attachment.stubrevolver_p1_m1.sight_2 = {}
-        -- These 3 are in the plugin but they have a space before them for whatever reason. As of v10.24, this seems to add them fine, but I'll leave these segregated in case that becomes an issue
-        wc.attachment.bolter_p1_m1.sight_2 = {}
-        wc.attachment.boltpistol_p1_m1.sight_2 = {}
-        wc.attachment.laspistol_p1_m1.sight_2 = {}
+    if not owo then
+        -- Compatibility patch: These slots are already added to these weapons by the MT plugin because of the helper sights
+        --      Creating them again would make the MT plugin's attachments in this slot unusable
+        if not mt then
+            wc.attachment.autogun_p1_m1.sight_2 = {}
+            wc.attachment.lasgun_p1_m1.sight_2 = {}
+            wc.attachment.lasgun_p2_m1.sight_2 = {}
+            wc.attachment.lasgun_p3_m1.sight_2 = {}
+            wc.attachment.shotgun_p2_m1.sight_2 = {}
+            wc.attachment.stubrevolver_p1_m1.sight_2 = {}
+            -- These 3 are in the plugin but they have a space before them for whatever reason. As of v10.24, this seems to add them fine, but I'll leave these segregated in case that becomes an issue
+            wc.attachment.bolter_p1_m1.sight_2 = {}
+            wc.attachment.boltpistol_p1_m1.sight_2 = {}
+            wc.attachment.laspistol_p1_m1.sight_2 = {}
+        end
+        -- Patch for Syn
+        if not syn then
+            wc.attachment.shotgun_p1_m1.sight_2 = {}
+        end
+        wc.attachment.autopistol_p1_m1.sight_2 = {}
+        wc.attachment.plasmagun_p1_m1.sight_2 = {}
     end
-    -- Patch for Syn
-    if not syn then
-        wc.attachment.shotgun_p1_m1.sight_2 = {}
-    end
-    wc.attachment.autopistol_p1_m1.sight_2 = {}
-    wc.attachment.plasmagun_p1_m1.sight_2 = {}
 
     -- ####################################################################
     -- ATTACHMENT INJECTION
@@ -141,15 +147,21 @@ function mod.on_all_mods_loaded()
         end
         -- If this plugin is the one creating the sight_2 slot, there must be a default sight_2 that doesn't have the hidden viewmodel
         local firstTime = false
-        if (weaponClass == "autopistol_p1_m1") or (weaponClass == "plasmagun_p1_m1") then
+        if (weaponClass == "plasmagun_p1_m1") then
             firstTime = true
             if debug then
                 mod:info("First time for: wc.attachment."..weaponClass..".sight_2")
             end
-        elseif not syn and (weaponClass == "shotgun_p1_m1") then
+        elseif not owo and (weaponClass == "autopistol_p1_m1") then
             firstTime = true
             if debug then
-                mod:info("First time (no syn) for: wc.attachment."..weaponClass..".sight_2")
+                mod:info("First time (no owo): wc.attachment."..weaponClass..".sight_2")
+            end
+        end
+        elseif not owo and not syn and (weaponClass == "shotgun_p1_m1") then
+            firstTime = true
+            if debug then
+                mod:info("First time (no syn nor owo) for: wc.attachment."..weaponClass..".sight_2")
             end
         elseif not mt and ((weaponClass == "autogun_p1_m1") or (weaponClass == "lasgun_p1_m1") or (weaponClass == "lasgun_p2_m1") or (weaponClass == "lasgun_p3_m1") or (weaponClass == "shotgun_p2_m1") or (weaponClass == "stubrevolver_p1_m1") or (weaponClass == "bolter_p1_m1") or (weaponClass == "boltpistol_p1_m1") or (weaponClass == "laspistol_p1_m1")) then
             firstTime = true
