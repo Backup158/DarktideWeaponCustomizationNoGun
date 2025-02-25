@@ -27,10 +27,16 @@ function mod.get_weapons()
 		"autopistol_p1_m1",
         "bolter_p1_m1",
         "boltpistol_p1_m1",
+        "flamer_p1_m1",
 		"lasgun_p1_m1", -- Infantry
         "lasgun_p2_m1", -- Helbore
         "lasgun_p3_m1", -- Recon
 		"laspistol_p1_m1",
+        "ogryn_gauntlet_p1_m1",
+        "ogryn_rippergun_p1_m1",
+        "ogryn_heavystubber_p1_m1",
+        "ogryn_heavystubber_p2_m1",
+        "ogryn_thumper_p1_m1",
 		"plasmagun_p1_m1",
 		"shotgun_p1_m1", -- Combat
 		"shotgun_p2_m1", -- Double Barrel
@@ -104,14 +110,12 @@ function mod.on_all_mods_loaded()
     -- ####################################################################
     -- CREATING THE ATTACHMENT SLOTS
     --  If the weapon doesn't already have sight_2 assigned to it, create the slot so attachments can be injected to them
-    --  
+    --      Creating them again would make the MT plugin's attachments in this slot unusable  
     -- ####################################################################
     -- If using Ostracized without Objection, the MT plugin is already required there so no need to check
     --  It also added sight_2 for combat shotguns if user doesn't have syn's, so bam
-    --  Oh and I added autopistol sight_2 already
     if not owo then
         -- Compatibility patch: These slots are already added to these weapons by the MT plugin because of the helper sights
-        --      Creating them again would make the MT plugin's attachments in this slot unusable
         if not mt then
             wc.attachment.autogun_p1_m1.sight_2 = {}
             wc.attachment.lasgun_p1_m1.sight_2 = {}
@@ -131,6 +135,12 @@ function mod.on_all_mods_loaded()
         wc.attachment.autopistol_p1_m1.sight_2 = {}
     end
 
+    wc.attachment.flamer_p1_m1.sight_2 = {}
+    wc.attachment.ogryn_gauntlet_p1_m1.sight_2 = {}
+    wc.attachment.ogryn_heavystubber_p1_m1.sight_2 = {}
+    wc.attachment.ogryn_heavystubber_p2_m1.sight_2 = {}
+    wc.attachment.ogryn_rippergun_p1_m1.sight_2 = {}
+    wc.attachment.ogryn_thumper_p1_m1.sight_2 = {}
     wc.attachment.plasmagun_p1_m1.sight_2 = {}
 
     -- ####################################################################
@@ -151,12 +161,8 @@ function mod.on_all_mods_loaded()
         end
         -- If this plugin is the one creating the sight_2 slot, there must be a default sight_2 that doesn't have the hidden viewmodel
         local firstTime = false
-        if (weaponClass == "plasmagun_p1_m1") then
-            firstTime = true
-            if debug then
-                mod:info("First time for: wc.attachment."..weaponClass..".sight_2")
-            end
-        elseif not owo and (weaponClass == "autopistol_p1_m1") then
+        
+        if not owo and (weaponClass == "autopistol_p1_m1") then
             firstTime = true
             if debug then
                 mod:info("First time (no owo): wc.attachment."..weaponClass..".sight_2")
@@ -170,6 +176,11 @@ function mod.on_all_mods_loaded()
             firstTime = true
             if debug then
                 mod:info("First time (no mt) for: wc.attachment."..weaponClass..".sight_2")
+            end
+        elseif (weaponClass == "plasmagun_p1_m1") or (weaponClass == "flamer_p1_m1") or (weaponClass == "ogryn_gauntlet_p1_m1") or (weaponClass == "ogryn_rippergun_p1_m1") or (weaponClass == "ogryn_heavystubber_p1_m1") or (weaponClass == "ogryn_heavystubber_p2_m1") or (weaponClass == "ogryn_thumper_p1_m1") then
+            firstTime = true
+            if debug then
+                mod:info("First time for: wc.attachment."..weaponClass..".sight_2")
             end
         else
             if debug then
