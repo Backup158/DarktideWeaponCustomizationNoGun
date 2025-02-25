@@ -157,7 +157,6 @@ function mod.on_all_mods_loaded()
             if debug then
                 mod:info("First time (no owo): wc.attachment."..weaponClass..".sight_2")
             end
-        end
         elseif not owo and not syn and (weaponClass == "shotgun_p1_m1") then
             firstTime = true
             if debug then
