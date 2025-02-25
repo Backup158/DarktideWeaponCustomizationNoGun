@@ -112,6 +112,13 @@ function mod.on_all_mods_loaded()
     --  If the weapon doesn't already have sight_2 assigned to it, create the slot so attachments can be injected to them
     --      Creating them again would make the MT plugin's attachments in this slot unusable  
     -- ####################################################################
+    wc.attachment.flamer_p1_m1.sight = {}
+    wc.attachment.ogryn_gauntlet_p1_m1.sight = {}
+    wc.attachment.ogryn_heavystubber_p1_m1.sight = {}
+    wc.attachment.ogryn_heavystubber_p2_m1.sight = {}
+    wc.attachment.ogryn_rippergun_p1_m1.sight = {}
+    wc.attachment.ogryn_thumper_p1_m1.sight = {}
+    
     wc.attachment.flamer_p1_m1.sight_2 = {}
     wc.attachment.ogryn_gauntlet_p1_m1.sight_2 = {}
     wc.attachment.ogryn_heavystubber_p1_m1.sight_2 = {}
@@ -161,6 +168,7 @@ function mod.on_all_mods_loaded()
         end
         -- If this plugin is the one creating the sight_2 slot, there must be a default sight_2 that doesn't have the hidden viewmodel
         local firstTime = false
+        local firstTimeDouble = false
         
         if not owo and (weaponClass == "autopistol_p1_m1") then
             firstTime = true
@@ -177,10 +185,16 @@ function mod.on_all_mods_loaded()
             if debug then
                 mod:info("First time (no mt) for: wc.attachment."..weaponClass..".sight_2")
             end
-        elseif (weaponClass == "plasmagun_p1_m1") or (weaponClass == "flamer_p1_m1") or (weaponClass == "ogryn_gauntlet_p1_m1") or (weaponClass == "ogryn_rippergun_p1_m1") or (weaponClass == "ogryn_heavystubber_p1_m1") or (weaponClass == "ogryn_heavystubber_p2_m1") or (weaponClass == "ogryn_thumper_p1_m1") then
+        elseif (weaponClass == "plasmagun_p1_m1") then
             firstTime = true
             if debug then
                 mod:info("First time for: wc.attachment."..weaponClass..".sight_2")
+            end
+        elseif (weaponClass == "flamer_p1_m1") or (weaponClass == "ogryn_gauntlet_p1_m1") or (weaponClass == "ogryn_rippergun_p1_m1") or (weaponClass == "ogryn_heavystubber_p1_m1") or (weaponClass == "ogryn_heavystubber_p2_m1") or (weaponClass == "ogryn_thumper_p1_m1") then
+            firstTime = true
+            firstTimeDouble = true
+            if debug then
+                mod:info("First time for: wc.attachment."..weaponClass..".sight_2 AND sight")
             end
         else
             if debug then
@@ -188,6 +202,13 @@ function mod.on_all_mods_loaded()
             end
         end
 
+        -- First time
+        if firstTimeDouble then
+            table.insert(
+                wc.attachment[weaponClass].sight,
+                {id = "no_gun_sight_invis_main_default", name = "Default", no_randomize = false}
+            )
+        end
         table.insert(
             wc.attachment[weaponClass].sight,
             {id = "no_gun_sight_invis_main", name = "No Viewmodel (No Sight)", no_randomize = true}
@@ -196,7 +217,7 @@ function mod.on_all_mods_loaded()
         if firstTime then
             table.insert(
                 wc.attachment[weaponClass].sight_2,
-                {id = "no_gun_sight_invis_default", name = "Default", no_randomize = true}
+                {id = "no_gun_sight_invis_default", name = "Default", no_randomize = false}
             )
         end
         table.insert(
@@ -220,6 +241,12 @@ function mod.on_all_mods_loaded()
             else
                 mod:error("!!! Could not find table: wc.attachment."..weaponClass)
             end
+        end
+        if firstTimeDouble then
+            table.merge_recursive(
+                wc.attachment_models[weaponClass],
+                {no_gun_sight_invis_main_default = {model = "", type = "sight", parent = "receiver"} }
+            )
         end
         table.merge_recursive(
             wc.attachment_models[weaponClass],
@@ -252,6 +279,16 @@ function mod.on_all_mods_loaded()
         --      For autoguns, the max recoil can make it so the bullets come from above the screen. But it's fine in the first half the magdump
         -- -30 puts the gun behind. Putting it too far will make trails disappear
         -- ########################################
+        if firstTimeDouble then
+            table.prepend(
+                wc.anchors[weaponClass].fixes, {
+                    {   dependencies = {"no_gun_sight_invis_main_default"},
+                        no_scope_offset =       { position = vector3_box(0, 0, 0.0), rotation = vector3_box(0, 0, 0) },
+                        scope_offset =          { position = vector3_box(0, 0, 0.0), rotation = vector3_box(0, 0, 0) },
+                    },
+                }
+            )
+        end
         table.prepend(
             wc.anchors[weaponClass].fixes, {
                 {   dependencies = {"no_gun_sight_invis_main"},
@@ -296,10 +333,22 @@ function mod.on_all_mods_loaded()
         -- ########################################
         -- Inject attachment
         -- ########################################
+        if firstTimeDouble then
+            table.insert(
+                wc.sights,
+                "no_gun_sight_invis_main_default"
+            )
+        end
         table.insert(
             wc.sights,
             "no_gun_sight_invis_main"
         )
+        if firstTime then
+                table.insert(
+                wc.reflex_sights,
+                "no_gun_sight_invis_default"
+            )
+        end
         table.insert(
             wc.reflex_sights,
             "no_gun_sight_invis"
