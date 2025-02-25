@@ -106,6 +106,9 @@ function mod.on_all_mods_loaded()
     --  If the weapon doesn't already have sight_2 assigned to it, create the slot so attachments can be injected to them
     --  
     -- ####################################################################
+    -- If using Ostracized without Objection, the MT plugin is already required there so no need to check
+    --  It also added sight_2 for combat shotguns if user doesn't have syn's, so bam
+    --  Oh and I added autopistol sight_2 already
     if not owo then
         -- Compatibility patch: These slots are already added to these weapons by the MT plugin because of the helper sights
         --      Creating them again would make the MT plugin's attachments in this slot unusable
@@ -126,8 +129,9 @@ function mod.on_all_mods_loaded()
             wc.attachment.shotgun_p1_m1.sight_2 = {}
         end
         wc.attachment.autopistol_p1_m1.sight_2 = {}
-        wc.attachment.plasmagun_p1_m1.sight_2 = {}
     end
+
+    wc.attachment.plasmagun_p1_m1.sight_2 = {}
 
     -- ####################################################################
     -- ATTACHMENT INJECTION
