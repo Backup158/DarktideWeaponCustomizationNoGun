@@ -33,9 +33,9 @@ function mod.get_weapons()
         "lasgun_p3_m1", -- Recon
 		"laspistol_p1_m1",
         "ogryn_gauntlet_p1_m1",
-        "ogryn_rippergun_p1_m1",
         "ogryn_heavystubber_p1_m1",
         "ogryn_heavystubber_p2_m1",
+        "ogryn_rippergun_p1_m1",
         "ogryn_thumper_p1_m1",
 		"plasmagun_p1_m1",
 		"shotgun_p1_m1", -- Combat
@@ -112,6 +112,14 @@ function mod.on_all_mods_loaded()
     --  If the weapon doesn't already have sight_2 assigned to it, create the slot so attachments can be injected to them
     --      Creating them again would make the MT plugin's attachments in this slot unusable  
     -- ####################################################################
+    wc.attachment.flamer_p1_m1.sight_2 = {}
+    wc.attachment.ogryn_gauntlet_p1_m1.sight_2 = {}
+    wc.attachment.ogryn_heavystubber_p1_m1.sight_2 = {}
+    wc.attachment.ogryn_heavystubber_p2_m1.sight_2 = {}
+    wc.attachment.ogryn_rippergun_p1_m1.sight_2 = {}
+    wc.attachment.ogryn_thumper_p1_m1.sight_2 = {}
+    wc.attachment.plasmagun_p1_m1.sight_2 = {}
+    
     -- If using Ostracized without Objection, the MT plugin is already required there so no need to check
     --  It also added sight_2 for combat shotguns if user doesn't have syn's, so bam
     if not owo then
@@ -134,14 +142,6 @@ function mod.on_all_mods_loaded()
         end
         wc.attachment.autopistol_p1_m1.sight_2 = {}
     end
-
-    wc.attachment.flamer_p1_m1.sight_2 = {}
-    wc.attachment.ogryn_gauntlet_p1_m1.sight_2 = {}
-    wc.attachment.ogryn_heavystubber_p1_m1.sight_2 = {}
-    wc.attachment.ogryn_heavystubber_p2_m1.sight_2 = {}
-    wc.attachment.ogryn_rippergun_p1_m1.sight_2 = {}
-    wc.attachment.ogryn_thumper_p1_m1.sight_2 = {}
-    wc.attachment.plasmagun_p1_m1.sight_2 = {}
 
     -- ####################################################################
     -- ATTACHMENT INJECTION
