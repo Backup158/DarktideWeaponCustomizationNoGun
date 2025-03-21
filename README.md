@@ -1,12 +1,17 @@
-This plugin adds attachments to Extended Weapon Customization (EWC) to hide the viewmodel while using the secondary action. The intent is to use this with Crosshair Remap (Continued) to have a clear view while aiming. We don't have r_drawviewmodel 0 in Darktide, so this will have to do.
-NOTE: By default, EWC hides crosshairs and laser pointers while aiming. Be sure to unhide in the mod options menu if you want to be able to aim using crosshairs/lasers.
+This plugin adds attachments to [Extended Weapon Customization](https://www.nexusmods.com/warhammer40kdarktide/mods/277) (EWC) to hide the viewmodel while using the secondary action. The intent is to use this with [Crosshair Remap (Continued)](https://www.nexusmods.com/warhammer40kdarktide/mods/253) to have a clear view while aiming. We don't have r_drawviewmodel 0 in Darktide, so this will have to do.
+> [!WARNING]
+> By default, EWC hides crosshairs and laser pointers while aiming. Be sure to unhide them in the mod options menu if you want to be able to aim using crosshairs/lasers.
 
 There are two types of sights: the main sight and the sight_2 helper.
 - The main sight is equippable in the first "Sight" slot. It should work with every combination of attachment, but will make the actual sight invisible even when not aiming.
+
 - The sight_2 helper is equippable in the second "Sight" slot. The helper is invisible and lets the main sight you chose stay visible when not aiming, while still hiding the entire gun when aiming.
-﻿- Variants: Left, Middle, and Right
-﻿- Affects where the bullet/laser tracers come from. See screenshots for details
-﻿- It works with most sights as long as you follow the load order, with few exception. Notably, it doesn't work with Syn's
+
+   - Variants: Left, Middle, and Right
+
+   - Affects where the bullet/laser tracers come from. See screenshots for details
+
+   - It works with most sights as long as you follow the load order, with few exception. Notably, it doesn't work with Syn's
 Aquilon/Kasrkin scopes (because they already use the sight_2 slot). I only tested out like 10 weapon/sight combinations so let me know if a specific combination breaks, include a screenshot of the customization page options too.
 
 As of v1.1, this mod includes a settings checker. As stated above in the note with big red letters, certain settings may cause this mod to not function as expected. The mod will check if those offending settings are present and will prompt you to handle the problem. I have included chat commands to disable these warnings for those don't want to dig through the Mod Options menu.
@@ -17,18 +22,24 @@ Because this counts as an attachment for EWC, you'll need to equip it on each gu
 <details>
   <summary>EWC Guide</summary>
   1. Open the customization menu for the weapon, then go to the EWC tab
-  2. Go to the second 'sight' attachment slot.
+  
+  2. Go to the second 'sight' attachment slot. 
+  
   3. Select the version you want.
+  
   4. Click Equip on the bottom right.
   Images can be found on nexus page.
 </details>
 
 Note that equipping it on one gun will only hide that specific gun, not every gun of the family.
+
 Say I have 3 Recon Lasguns, a Mk VIc and two Mk XIIs. If I equip the hidden viewmodel on one of the Mk XIIs, it will only hide that one; the other XII and the VIc are unaffected. To hide it for them too, I'd have to go through this process to equip the hidden viewmodel attachment for each of them.
 
 # Load Order
 This mod needs to go AFTER the main plugin, which is the only hard requirement.
+
 It goes BEFORE Syn's Edits and the MT Plugin, if you use those.
+
 For any other hypothetical plugins that add sights, this should be compatible if you put this above them as well.
 ```
 weapon_customization
@@ -36,7 +47,6 @@ weapon_customization_no_gun
 weapon_customization_syn_edits
 weapon_customization_mt_stuff
 ```
-
 Its position in relation to Crosshair Remap doesn't matter. I have this above that, in case that helps.
 
 # Technical Details
