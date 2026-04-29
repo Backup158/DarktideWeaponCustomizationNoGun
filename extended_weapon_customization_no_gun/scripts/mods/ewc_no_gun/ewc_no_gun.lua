@@ -7,31 +7,38 @@ mod.version = "1.0.0"
 mod:info("v" .. mod.version .. mod:localize("mod_version_print_message"))
 local debug = mod:get("enable_debug_mode")
 
+-- ##################
 -- Performance
+-- ##################
 local table = table
 local table_insert = table.insert
 local table_merge_recursive = table.merge_recursive
+local string = string
+local string_sub = string.sub
+local string_gsub = string.gsub
 local pairs = pairs
 local vector3_box = Vector3Box
 
+-- ##################
+-- Requires
+-- ##################
+-- List of weapons from game code
+local WeaponTemplates = require("scripts/settings/equipment/weapon_templates/weapon_templates")
+
+-- ##################
+-- Game Content Addresses
+-- ##################
 local _item = "content/items/weapons/player"
 local _item_ranged = _item.."/ranged"
 local _item_melee = _item.."/melee"
 local _empty_item = "content/items/weapons/player/trinkets/unused_trinket"
 local _item_empty_trinket = _item.."/trinkets/unused_trinket"
 
--- Prepend function from EWC Template
-local table_prepend = function(t1, t2)
-    for i, d in ipairs(t2) do
-        table_insert(t1, i, d)
-    end
-end
-
 -- ##################
 -- Plugin Data
 -- ##################
 -- Plugin Skeleton to add to
-local extended_weapon_customization_plugin = {
+local attachments_table_for_ewc = {
     attachments = {},
     attachment_slots = {},
     fixes = {},
@@ -68,6 +75,39 @@ local ranged_weapons = {
 }
 local icon_render_unit_rotation_offset_val = {90, 0, 30}
 local icon_render_camera_position_offset_val = {-0.2, -1.75, 0.15}
+
+-- ####################################
+-- Helper Functions
+-- ####################################
+-- Prepend function from EWC Template
+local table_prepend = function(t1, t2)
+    for i, d in ipairs(t2) do
+        table_insert(t1, i, d)
+    end
+end
+
+local function info_if_debug(message)
+    if debug then mod:info(message) end
+end
+
+-- ######
+-- String is key in table?
+-- RETURN: boolean; was the key found?
+-- ######
+local function string_is_key_in_table(string_to_find, table_to_search)
+    if table_to_search[string_to_find] then
+        return true
+    else
+        -- Checks if key is in table but is false
+        for key, _ in pairs(table_to_search) do
+            if string_to_find == key then
+                return true
+            end
+        end
+        return false
+    end
+end
+
 -- ####################################
 -- Attachment Creation
 -- ####################################
@@ -177,7 +217,7 @@ for i = 1, #names_of_hwa_aim_styles do
             custom_selection_group = "group_hwa_aim_style",
     }
     -- Adding kitbash data (directly)
-    extended_weapon_customization_plugin.kitbashs[full_address_of_attachment] = {
+    attachments_table_for_ewc.kitbashs[full_address_of_attachment] = {
         is_fallback_item = false,
         show_in_1p = true,
         only_show_in_1p = false,
@@ -214,14 +254,14 @@ for breed_type, weapons_list in pairs(ranged_weapons) do
         local weapon_name = weapons_list[i]
         -- Adding attachments
         --   Weapon entry in ewc table
-        if not extended_weapon_customization_plugin.attachments[weapon_name] then extended_weapon_customization_plugin.attachments[weapon_name] = {} end
+        if not attachments_table_for_ewc.attachments[weapon_name] then attachments_table_for_ewc.attachments[weapon_name] = {} end
         --   Weapon entry's attachment slot in ewc table
-        if not extended_weapon_customization_plugin.attachments[weapon_name][aim_style_slot_name] then extended_weapon_customization_plugin.attachments[weapon_name][aim_style_slot_name] = {} end
-        table_merge_recursive(extended_weapon_customization_plugin.attachments[weapon_name][aim_style_slot_name], attachments_add_blob.attachments)
+        if not attachments_table_for_ewc.attachments[weapon_name][aim_style_slot_name] then attachments_table_for_ewc.attachments[weapon_name][aim_style_slot_name] = {} end
+        table_merge_recursive(attachments_table_for_ewc.attachments[weapon_name][aim_style_slot_name], attachments_add_blob.attachments)
         
         -- Adding attachment slot to weapon
-        if not extended_weapon_customization_plugin.attachment_slots[weapon_name] then extended_weapon_customization_plugin.attachment_slots[weapon_name] = {} end
-        extended_weapon_customization_plugin.attachment_slots[weapon_name][aim_style_slot_name] = {
+        if not attachments_table_for_ewc.attachment_slots[weapon_name] then attachments_table_for_ewc.attachment_slots[weapon_name] = {} end
+        attachments_table_for_ewc.attachment_slots[weapon_name][aim_style_slot_name] = {
             parent_slot = "receiver",
             default_path = _item_empty_trinket,
             fix = {
@@ -235,17 +275,86 @@ for breed_type, weapons_list in pairs(ranged_weapons) do
         }
         
         -- Adding each fix
-        if not extended_weapon_customization_plugin.fixes[weapon_name] then extended_weapon_customization_plugin.fixes[weapon_name] = {} end
+        if not attachments_table_for_ewc.fixes[weapon_name] then attachments_table_for_ewc.fixes[weapon_name] = {} end
         for k = 1, #(attachments_add_blob.fixes[breed_type]) do
-            table_insert(extended_weapon_customization_plugin.fixes[weapon_name], attachments_add_blob.fixes[breed_type][k])
+            table_insert(attachments_table_for_ewc.fixes[weapon_name], attachments_add_blob.fixes[breed_type][k])
         end
     end
 end
 -- kitbashes were added directly
 -- ##################
+-- Copying attachments, slots, and fixes to other marks
+-- ##################
+info_if_debug("Copying attachments to all marks. Going through attachments_table_for_ewc...")
+local first_marks_which_have_siblings = {}
+-- See which weapons may need to copy over to siblings
+for weapon_id, _ in pairs(attachments_table_for_ewc.attachments) do
+    -- If first mark of pattern, copy to the siblings
+    --  Check last two characters of the name
+    --  if mark 1, copy to mk 2 and 3
+    --      if they exist (checks for this are handled in that function)
+    info_if_debug("\tChecking "..weapon_id)
+    if (string_sub(weapon_id, -2) == "m1") then
+        table_insert(first_marks_which_have_siblings, weapon_id)
+    else
+        mod:error("uwu [REPORT TO MOD AUTHOR] not the first mark: "..weapon_id)
+    end
+end
+-- copies to siblings
+--  Done this way because pairs() does NOT guarantee order
+--  and since I'm adding to the table i'm reading, it can lead to duplicates and shuffling order
+--  so somehow things can get skipped? this happened to ilas for some reason
+for i = 1, #(first_marks_which_have_siblings) do
+    local weapon_id_of_first_mark = first_marks_which_have_siblings[i]
+    if not type(weapon_id_of_first_mark) == "string" then
+        mod:error("uwu first_mark_id is not a string")
+        return
+    end
+    info_if_debug("\tCopying attachments to siblings of "..weapon_id_of_first_mark)
+    -- from 2 to 3
+    for k = 2, 3 do
+        local weapon_id_of_sibling = string_gsub(weapon_id_of_first_mark, "1$", tostring(k))
+        if string_is_key_in_table(weapon_id_of_sibling, WeaponTemplates) then
+            info_if_debug("\t\tuwu Copying to sibling: "..weapon_id_of_first_mark.." --> "..weapon_id_of_sibling)
+            -- Copy Attachments
+            --      If source does not exist, stop
+            if not attachments_table_for_ewc.attachments[weapon_id_of_first_mark] then
+                mod:error("No attachments found for "..weapon_id_of_first_mark)
+                return
+            end
+            --      If destination doesn't exist, create it
+            if not attachments_table_for_ewc.attachments[weapon_id_of_sibling] then attachments_table_for_ewc.attachments[weapon_id_of_sibling] = {} end
+            table_merge_recursive(attachments_table_for_ewc.attachments[weapon_id_of_sibling], attachments_table_for_ewc.attachments[weapon_id_of_first_mark])
+            -- Copy Attachment Slots
+            --      If source does not exist, stop
+            if not attachments_table_for_ewc.attachment_slots[weapon_id_of_first_mark] then
+                info_if_debug("No attachment slots found for "..weapon_id_of_first_mark)
+                return
+            end
+            --      If destination doesn't exist, create it
+            if not attachments_table_for_ewc.attachment_slots[weapon_id_of_sibling] then attachments_table_for_ewc.attachment_slots[weapon_id_of_sibling] = {} end
+            table_merge_recursive(attachments_table_for_ewc.attachment_slots[weapon_id_of_sibling], attachments_table_for_ewc.attachment_slots[weapon_id_of_first_mark])
+            -- Copy Fixes
+            --      If source does not exist, stop
+            if not attachments_table_for_ewc.fixes[weapon_id_of_first_mark] then
+                mod:info("No fixes in source: "..weapon_id_of_first_mark)
+                return
+            end
+            --      If destination doesn't exist, create it
+            if not attachments_table_for_ewc.fixes[weapon_id_of_sibling] then attachments_table_for_ewc.fixes[weapon_id_of_sibling] = {} end
+            --      needs to be insert because numerical index, so merge recursive would smash fixes together
+            for l = 1, #(attachments_table_for_ewc.fixes[weapon_id_of_first_mark]) do
+                table_insert(attachments_table_for_ewc.fixes[weapon_id_of_sibling], attachments_table_for_ewc.fixes[weapon_id_of_first_mark][l])
+            end
+        else
+            info_if_debug("\t\tuwu This is not a real weapon: "..weapon_id_of_sibling)
+        end
+    end
+end
+-- ##################
 -- After all is done, put into global so EWC can actually use it
 -- ##################
-mod.extended_weapon_customization_plugin = extended_weapon_customization_plugin
+mod.extended_weapon_customization_plugin = attachments_table_for_ewc
 
 -- ####################################
 -- Hooks
