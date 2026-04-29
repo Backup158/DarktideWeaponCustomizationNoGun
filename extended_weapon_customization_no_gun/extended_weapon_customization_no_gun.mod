@@ -11,6 +11,9 @@ return {
 	require = {
 		 "extended_weapon_customization",
 	},
+	load_before = {
+		 "extended_weapon_customization",
+	},
 	version = "1.0.0",
 	packages = {},
 }
