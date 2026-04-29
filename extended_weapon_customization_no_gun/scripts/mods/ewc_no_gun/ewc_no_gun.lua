@@ -134,33 +134,33 @@ for i = 1, #names_of_hwa_aim_styles do
     }
     -- Adding kitbash data (directly)
     extended_weapon_customization_plugin.kitbashs[full_address_of_attachment] = {
-            is_fallback_item = false,
-            show_in_1p = true,
-            only_show_in_1p = false,
-            base_unit = _empty_item,
-            item_list_faction = "Player",
-            tags = {},
-            workflow_checklist = {},
-            workflow_state = "RELEASABLE",
-            feature_flags = {"ROTATION_ursula"},
-            -- Attach node in the unit - can be removed, in which case it will probably use node 1 of the parent slot unit
-            -- attach_node = "ap_bullet_01",
-            resource_dependencies = {
-                -- ["content/weapons/player/ranged/rippergun_rifle/ammunition/ammunition_01/ammunition_01"] = true,
-                [_empty_item] = true,
+        is_fallback_item = false,
+        show_in_1p = true,
+        only_show_in_1p = false,
+        base_unit = _empty_item,
+        item_list_faction = "Player",
+        tags = {},
+        workflow_checklist = {},
+        workflow_state = "RELEASABLE",
+        feature_flags = {"ROTATION_ursula"},
+        -- Attach node in the unit - can be removed, in which case it will probably use node 1 of the parent slot unit
+        -- attach_node = "ap_bullet_01",
+        resource_dependencies = {
+            -- ["content/weapons/player/ranged/rippergun_rifle/ammunition/ammunition_01/ammunition_01"] = true,
+            [_empty_item] = true,
+        },
+        -- Attachments - This describes the structure of the item
+        attachments = {
+            zzz_shared_material_overrides = {
+                item = "",
+                children = {},
+                material_overrides = {},
             },
-            -- Attachments - This describes the structure of the item
-            attachments = {
-                zzz_shared_material_overrides = {
-                    item = "",
-                    children = {},
-                    material_overrides = {},
-                },
-            },
-            display_name = "loc_ewc_"..attachment_name,
-            name = full_address_of_attachment,
-            is_full_item = true,
-        }
+        },
+        display_name = "loc_ewc_"..attachment_name,
+        name = full_address_of_attachment,
+        is_full_item = true,
+    }
 end
 -- ##################
 -- Adding to Weapons
