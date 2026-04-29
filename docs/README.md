@@ -17,7 +17,7 @@ Load order with Crosshair Remap doesn't matter.
 Install everything using whichever method you prefer. If you don't have one, refer to the [Darktide manual mod installation guide](https://dmf-docs.darkti.de/#/installing-mods).
 
 # Usage
-In the EWC customization menu for the weapon, select one of these options in the Aim Style tab.
+In the EWC customization menu for the weapon, select one of these options in the Aim Style tab. There are three options: centered aim, left leaning, and right leaning. The weapon will still be off screen, but the bullet trails will come from those locations.
 
 ![EWC customization menu slot](Images/ewc_slot.png)
 
