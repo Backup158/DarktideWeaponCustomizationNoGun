@@ -32,6 +32,7 @@ local _item = "content/items/weapons/player"
 local _item_ranged = _item.."/ranged"
 local _item_melee = _item.."/melee"
 local _empty_item = "content/items/weapons/player/trinkets/unused_trinket"
+local _empty_item_master_table = "content/characters/empty_item/empty_item"
 local _item_empty_trinket = _item.."/trinkets/unused_trinket"
 
 -- ##################
@@ -221,7 +222,7 @@ for i = 1, #names_of_hwa_aim_styles do
         is_fallback_item = false,
         show_in_1p = true,
         only_show_in_1p = false,
-        base_unit = _empty_item,
+        base_unit = _empty_item_master_table,
         item_list_faction = "Player",
         tags = {},
         workflow_checklist = {},
@@ -231,7 +232,7 @@ for i = 1, #names_of_hwa_aim_styles do
         -- attach_node = "ap_bullet_01",
         resource_dependencies = {
             -- ["content/weapons/player/ranged/rippergun_rifle/ammunition/ammunition_01/ammunition_01"] = true,
-            [_empty_item] = true,
+            [_empty_item_master_table] = true,
         },
         -- Attachments - This describes the structure of the item
         attachments = {
