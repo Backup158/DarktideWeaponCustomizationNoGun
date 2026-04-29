@@ -33,6 +33,7 @@ end
 -- Plugin Skeleton to add to
 local extended_weapon_customization_plugin = {
     attachments = {},
+    attachment_slots = {},
     fixes = {},
     kitbashs = {},
 }
