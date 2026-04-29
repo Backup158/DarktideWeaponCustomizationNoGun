@@ -81,42 +81,85 @@ local attachments_add_blob = {
         -- filled out in loop below
     },
     fixes = {
-        {   attachment_slot = "sight_offset",
-            requirements = {
-                aim_style = {
-                    has = "hwa_aim_style",
+        human = {
+            {   attachment_slot = "sight_offset",
+                requirements = {
+                    aim_style = {
+                        has = "hwa_aim_style",
+                    },
+                },
+                fix = {
+                    offset = {
+                        position = vector3_box(0, -30, -1.7),
+                        rotation = vector3_box(0, 0, 0),
+                    },
                 },
             },
-            fix = {
-                offset = {
-                    position = vector3_box(0, -30, -1.7),
-                    rotation = vector3_box(0, 0, 0),
+            {   attachment_slot = "sight_offset",
+                requirements = {
+                    aim_style = {
+                        has = "hwa_aim_style_left",
+                    },
+                },
+                fix = {
+                    offset = {
+                        position = vector3_box(-1, -20, -1.7),
+                        rotation = vector3_box(0, 0, 0),
+                    },
+                },
+            },
+            {   attachment_slot = "sight_offset",
+                requirements = {
+                    aim_style = {
+                        has = "hwa_aim_style_right",
+                    },
+                },
+                fix = {
+                    offset = {
+                        position = vector3_box(1, -20, -1.7),
+                        rotation = vector3_box(0, 0, 0),
+                    },
                 },
             },
         },
-        {   attachment_slot = "sight_offset",
-            requirements = {
-                aim_style = {
-                    has = "hwa_aim_style_left",
+        ogryn = {
+            {   attachment_slot = "sight_offset",
+                requirements = {
+                    aim_style = {
+                        has = "hwa_aim_style",
+                    },
+                },
+                fix = {
+                    offset = {
+                        position = vector3_box(0, -30, -1.7),
+                        rotation = vector3_box(0, 0, 0),
+                    },
                 },
             },
-            fix = {
-                offset = {
-                    position = vector3_box(-1, -20, -1.7),
-                    rotation = vector3_box(0, 0, 0),
+            {   attachment_slot = "sight_offset",
+                requirements = {
+                    aim_style = {
+                        has = "hwa_aim_style_left",
+                    },
+                },
+                fix = {
+                    offset = {
+                        position = vector3_box(-1, -20, -1.7),
+                        rotation = vector3_box(0, 0, 0),
+                    },
                 },
             },
-        },
-        {   attachment_slot = "sight_offset",
-            requirements = {
-                aim_style = {
-                    has = "hwa_aim_style_right",
+            {   attachment_slot = "sight_offset",
+                requirements = {
+                    aim_style = {
+                        has = "hwa_aim_style_right",
+                    },
                 },
-            },
-            fix = {
-                offset = {
-                    position = vector3_box(1, -20, -1.7),
-                    rotation = vector3_box(0, 0, 0),
+                fix = {
+                    offset = {
+                        position = vector3_box(1, -20, -1.7),
+                        rotation = vector3_box(0, 0, 0),
+                    },
                 },
             },
         },
@@ -167,8 +210,8 @@ end
 -- Adding to Weapons
 -- ##################
 for breed_type, weapons_list in pairs(ranged_weapons) do
-    for i = 1, #weapons_list[breed_type] do
-        local weapon_name = weapons_list[breed_type][i]
+    for i = 1, #weapons_list do
+        local weapon_name = weapons_list[i]
         -- Adding attachments
         --   Weapon entry in ewc table
         if not extended_weapon_customization_plugin.attachments[weapon_name] then extended_weapon_customization_plugin.attachments[weapon_name] = {} end
@@ -193,8 +236,8 @@ for breed_type, weapons_list in pairs(ranged_weapons) do
         
         -- Adding each fix
         if not extended_weapon_customization_plugin.fixes[weapon_name] then extended_weapon_customization_plugin.fixes[weapon_name] = {} end
-        for k = 1, #(attachments_add_blob.fixes) do
-            table_insert(extended_weapon_customization_plugin.fixes[weapon_name], attachments_add_blob.fixes[k])
+        for k = 1, #(attachments_add_blob.fixes[breed_type]) do
+            table_insert(extended_weapon_customization_plugin.fixes[weapon_name], attachments_add_blob.fixes[breed_type][k])
         end
     end
 end
