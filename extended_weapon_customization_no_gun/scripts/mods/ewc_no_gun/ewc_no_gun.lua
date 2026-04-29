@@ -75,6 +75,7 @@ local icon_render_camera_position_offset_val = {-0.2, -1.75, 0.15}
 -- Templates
 -- ##################
 local names_of_hwa_aim_styles = {"hwa_aim_style_default", "hwa_aim_style", "hwa_aim_style_left", "hwa_aim_style_right" }
+local aim_style_slot_name = "aim_style"
 local attachments_add_blob = {
     attachments = {
         -- filled out in loop below
@@ -124,7 +125,7 @@ local attachments_add_blob = {
 }
 for i = 1, #names_of_hwa_aim_styles do
     local attachment_name = names_of_hwa_aim_styles[i]
-    local full_address_of_attachment = _item_ranged.."/aim_style/"..attachment_name
+    local full_address_of_attachment = _item_ranged.."/"..aim_style_slot_name.."/"..attachment_name
     -- Adding attachment data
     attachments_add_blob.attachments[attachment_name] = {
             replacement_path = full_address_of_attachment,
@@ -172,8 +173,24 @@ for breed_type, weapons_list in pairs(ranged_weapons) do
         --   Weapon entry in ewc table
         if not extended_weapon_customization_plugin.attachments[weapon_name] then extended_weapon_customization_plugin.attachments[weapon_name] = {} end
         --   Weapon entry's attachment slot in ewc table
-        if not extended_weapon_customization_plugin.attachments[weapon_name]["aim_style"] then extended_weapon_customization_plugin.attachments[weapon_name]["aim_style"] = {} end
-        table_merge_recursive(extended_weapon_customization_plugin.attachments[weapon_name]["aim_style"], attachments_add_blob.attachments)
+        if not extended_weapon_customization_plugin.attachments[weapon_name][aim_style_slot_name] then extended_weapon_customization_plugin.attachments[weapon_name][aim_style_slot_name] = {} end
+        table_merge_recursive(extended_weapon_customization_plugin.attachments[weapon_name][aim_style_slot_name], attachments_add_blob.attachments)
+        
+        -- Adding attachment slot to weapon
+        if not extended_weapon_customization_plugin.attachment_slots[weapon_name] then extended_weapon_customization_plugin.attachment_slots[weapon_name] = {} end
+        extended_weapon_customization_plugin.attachment_slots[weapon_name][aim_style_slot_name] = {
+            parent_slot = "receiver",
+            default_path = _item_empty_trinket,
+            fix = {
+                offset = {
+                    position = vector3_box(0, 0, 0),
+                    rotation = vector3_box(0, 0, 0),
+                    scale = vector3_box(1, 1, 1),
+                    node = 1,
+                },
+            },
+        }
+        
         -- Adding each fix
         if not extended_weapon_customization_plugin.fixes[weapon_name] then extended_weapon_customization_plugin.fixes[weapon_name] = {} end
         for k = 1, #(attachments_add_blob.fixes) do
