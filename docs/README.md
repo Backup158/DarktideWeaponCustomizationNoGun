@@ -33,3 +33,8 @@ This only hides the weapon while aiming. It doesn't add crosshairs, so you'll be
 There are alternatives which do not require EWC. I won't promise that this list is up-to-date, but I'll leave it here in case it helps.
 - [Cameleoline](https://www.nexusmods.com/warhammer40kdarktide/mods/495)
 - [ViewModelTweaker](https://www.nexusmods.com/warhammer40kdarktide/mods/628)
+
+# Contact
+I prefer to keep things on Nexus, but while EWC is gone, I'll use D\*scord instead.
+- [Thread](https://discord.com/channels/1048312349867646996/1423567934789521492) in the Darktide Modders Discord
+- You can also just talk about it in the *#weapon-customization-channel*
