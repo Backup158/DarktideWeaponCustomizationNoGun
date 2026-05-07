@@ -1,16 +1,13 @@
 This plugin adds attachments to Extended Weapon Customization (EWC) to hide the viewmodel while using the secondary action, allowing for a clear view of the enemies on screen. We don't have `r_drawviewmodel 0` in Darktide, so this will do.
 
 # Requirements and Installation
-1. Extended Weapon Customization
-    - Hosted in the [Darktide Modders Discord](https://discord.gg/rKYWtaDx4D) server, where it's pinned in the *#weapon-customization-mod* channel
-    - The file is named `extended_weapon_customization.zip`. Be sure to check the FAQ in the other pins for more info (including requirements for EWC).
-    - The Nexus page is hidden and the GitHub repository is not updated (as of writing 2026-04-29). Unfortunately, Discord is the only publicly available option.
+1. [Extended Weapon Customization](https://www.nexusmods.com/warhammer40kdarktide/mods/277)
 2. [Crosshair Remap (Continued)](https://www.nexusmods.com/warhammer40kdarktide/mods/253)
     - Not a hard requirement, but highly recommended so there's a crosshair while you aim
 3. This mod
     - [GitHub releases](https://github.com/Backup158/DarktideWeaponCustomizationNoGun/releases/latest)
-    - Will be uploaded to Nexus when EWC is back on Nexus
-For best results, load this mod *before* EWC! It won't if put after; it'll just fail with some sights from the main mod.
+    - [NexusMods](https://www.nexusmods.com/games/warhammer40kdarktide/mods/461)
+For best results, load this mod *before* EWC! It won't crash if put after; it'll just not work with some sights from the main mod.
 
 Load order with Crosshair Remap doesn't matter.
 
