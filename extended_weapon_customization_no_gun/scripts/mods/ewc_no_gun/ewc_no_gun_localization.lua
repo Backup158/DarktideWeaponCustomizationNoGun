@@ -35,10 +35,9 @@ local localizations = {
 	mod_description = {
 		en = "Extended Weapon Customization plugin that adds sights to hide the gun when aiming down sights",
 	},
-	mod_version_print_message = {
-		-- This appears after version number: v1.0.0 loaded uwu nya :3
-		en = " loaded uwu nya :3",
-	},
+	-- --------------
+	-- Widgets
+	-- --------------
     enable_debug_mode = {
 		en = "Debug Mode",
 	},
@@ -53,6 +52,19 @@ local localizations = {
 	},
 	show_warning_remap_description = {
 		en = "On game start, check if user has Crosshair Remap. Warns user if not.",
+	},
+    mod_option_allow_randomization = {
+		en = "Allow Randomization",
+	},
+	mod_option_allow_randomization_description = {
+		en = "Lets EWC use these parts in the randomization mod options",
+	},
+	-- --------------
+	-- Messages
+	-- --------------
+	mod_version_print_message = {
+		-- This appears after version number: v1.0.0 loaded uwu nya :3
+		en = " loaded uwu nya :3",
 	},
 	warning_remap = {
 		en = "You do not have Crosshair Remap installed/enabled! Without it, aiming with hidden viewmodels will NOT have a crosshair. If you're ok with that and don't want to see this warning, disable this warning by toggling 'Crosshair Remap Warning' in this mod's settings.\nAlternatively, type '/ack_remap' in game chat."

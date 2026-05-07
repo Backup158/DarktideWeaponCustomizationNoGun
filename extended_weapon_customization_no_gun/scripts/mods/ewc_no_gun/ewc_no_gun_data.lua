@@ -12,6 +12,11 @@ return {
 				default_value = false,
 			},
 			{
+				setting_id = "mod_option_allow_randomization",
+				type = "checkbox",
+				default_value = false,
+			},
+			{
 				setting_id = "warning_widgets",
 				type = "group",
 				sub_widgets = {

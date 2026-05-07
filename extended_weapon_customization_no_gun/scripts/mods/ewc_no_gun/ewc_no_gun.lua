@@ -3,7 +3,7 @@ local mod = get_mod("extended_weapon_customization_no_gun")
 -- ####################################
 -- DATA
 -- ####################################
-mod.version = "1.0.0"
+mod.version = "2.1.0"
 mod:info("v" .. mod.version .. mod:localize("mod_version_print_message"))
 local debug = mod:get("enable_debug_mode")
 
@@ -216,6 +216,7 @@ for i = 1, #names_of_hwa_aim_styles do
             icon_render_unit_rotation_offset = icon_render_unit_rotation_offset_val,
             icon_render_camera_position_offset = icon_render_camera_position_offset_val,
             custom_selection_group = "group_hwa_aim_style",
+            randomization_requirement = "mod_option_allow_randomization",
     }
     -- Adding kitbash data (directly)
     attachments_table_for_ewc.kitbashs[full_address_of_attachment] = {
