@@ -236,6 +236,8 @@ for i = 1, #names_of_hwa_aim_styles do
             [_empty_item_master_table] = true,
         },
         -- Attachments - This describes the structure of the item
+        --  With no children, this also makes the game hang on closing
+        --[[
         attachments = {
             zzz_shared_material_overrides = {
                 item = "",
@@ -243,6 +245,7 @@ for i = 1, #names_of_hwa_aim_styles do
                 material_overrides = {},
             },
         },
+        ]]
         display_name = "loc_ewc_"..attachment_name,
         name = full_address_of_attachment,
         is_full_item = true,
