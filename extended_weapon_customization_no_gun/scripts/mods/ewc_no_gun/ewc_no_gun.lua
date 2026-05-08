@@ -3,7 +3,7 @@ local mod = get_mod("extended_weapon_customization_no_gun")
 -- ####################################
 -- DATA
 -- ####################################
-mod.version = "2.1.0"
+mod.version = "2.1.1"
 mod:info("v" .. mod.version .. mod:localize("mod_version_print_message"))
 local debug = mod:get("enable_debug_mode")
 

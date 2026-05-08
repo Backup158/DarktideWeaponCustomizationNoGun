@@ -14,6 +14,6 @@ return {
 	load_before = {
 		 "extended_weapon_customization",
 	},
-	version = "2.0.1",
+	version = "2.1.1",
 	packages = {},
 }
