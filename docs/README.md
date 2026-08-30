@@ -16,11 +16,11 @@ Install everything using whichever method you prefer. If you don't have one, ref
 # Usage
 In the EWC customization menu for the weapon, select one of these options in the "Aiming Style" slot. There are three options: centered aim, left leaning, and right leaning. The weapon will still be off screen, but the bullet trails will come from those locations.
 
-![EWC customization menu slot](Images/ewc_slot.png)
+![EWC customization menu slot](assets/images/ewc_slot.png)
 
 Aim.
 
-![Aim](Images/hwa_example_4.png)
+![Aim](assets/images/hwa_example_4.png)
 
 Currently (v1.0.0), this only works with sights from Extended Weapon Customization. Equipping sights from other plugins may not work.
 
