@@ -28,6 +28,6 @@ jobs:
           filename: extended_weapon_customization_no_gun.zip
           display_name: "Extended Weapon Customization - Hidden Viewmodels While Aiming"
           description: "https://backup158.github.io/DarktideWeaponCustomizationNoGun/CHANGELOG"
-          changelog: "https://backup158.github.io/DarktideWeaponCustomizationNoGun/CHANGELOG"
+          # changelog: "https://backup158.github.io/DarktideWeaponCustomizationNoGun/CHANGELOG"
           version: ${{ github.event.release.tag_name || github.event.inputs.version }}
           update_mod_version: true
