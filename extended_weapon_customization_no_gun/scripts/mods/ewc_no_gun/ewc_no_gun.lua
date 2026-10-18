@@ -3,8 +3,6 @@ local mod = get_mod("extended_weapon_customization_no_gun")
 -- ####################################
 -- DATA
 -- ####################################
-mod.version = "2.1.1"
-mod:info("v" .. mod.version .. mod:localize("mod_version_print_message"))
 local debug = mod:get("enable_debug_mode")
 
 -- ##################
@@ -55,13 +53,17 @@ local ranged_weapons = {
         "bolter_p1_m1",
         "boltpistol_p1_m1",
         "flamer_p1_m1",
+        "galvanic_rifle_p1_m1",
         "lasgun_p1_m1", -- Infantry
         "lasgun_p2_m1", -- Helbore
         "lasgun_p3_m1", -- Recon
         "laspistol_p1_m1",
+        "needlepistol_p1_m1",
+        "phosphor_pistol_p1_m1",
         "plasmagun_p1_m1",
         "shotgun_p1_m1", -- Combat
         "shotgun_p2_m1", -- Double Barrel
+        "shotgun_p1_m3", -- Huntsman's
         "shotgun_p4_m1", -- Exterminator
         "shotpistol_shield_p1_m1",
         "stubrevolver_p1_m1",
@@ -71,9 +73,10 @@ local ranged_weapons = {
         "ogryn_heavystubber_p1_m1", -- Twink
         "ogryn_heavystubber_p2_m1", -- Single
         "ogryn_rippergun_p1_m1",
-        "ogryn_thumper_p1_m1", -- Kickback and Rumbler
+        "ogryn_thumper_p1_m1", -- Kickback and Rumbler and Thugshot
     },
 }
+
 local icon_render_unit_rotation_offset_val = {90, 0, 30}
 local icon_render_camera_position_offset_val = {-0.2, -1.75, 0.15}
 
@@ -267,7 +270,7 @@ for breed_type, weapons_list in pairs(ranged_weapons) do
         -- Adding attachment slot to weapon
         if not attachments_table_for_ewc.attachment_slots[weapon_name] then attachments_table_for_ewc.attachment_slots[weapon_name] = {} end
         attachments_table_for_ewc.attachment_slots[weapon_name][aim_style_slot_name] = {
-            parent_slot = "receiver",
+            parent_slot = "receiver", -- parent_attachment_slot_override[weapon_name] or
             default_path = _item_empty_trinket,
             fix = {
                 offset = {

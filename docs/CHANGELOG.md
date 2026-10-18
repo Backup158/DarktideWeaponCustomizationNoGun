@@ -1,3 +1,10 @@
+# 2.2.0 - 2026-10-18
+## Added
+- New weapons from Hive Scum and Skitarii
+- DMF Metadata
+## Fixed
+- Missing parents
+
 # 2026-05-08
 v2.1.1
 - Removed empty `zzz_shared_material_overrides` to avoid contributing the game not closing after pressing Quit
