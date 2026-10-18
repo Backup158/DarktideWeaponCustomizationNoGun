@@ -3,7 +3,9 @@
 - New weapons from Hive Scum and Skitarii
 - DMF Metadata
 ## Fixed
-- Missing parents. Sights now default to rail since pretty much everyone has that
+- Could not be equipped on some weapons
+    - Revolver notably
+    - Was due to a lack of parent, which now has a override system to deal with that
 
 # 2026-05-08
 v2.1.1
