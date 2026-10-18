@@ -80,7 +80,16 @@ local ranged_weapons = {
     },
 }
 local parent_attachment_slot_override = {
-
+    ["flamer_p1_m1"] = "receiver",
+    ["shotgun_p1_m1"] = "receiver",
+    ["shotgun_p2_m1"] = "receiver",
+    ["shotgun_p3_m1"] = "receiver",
+    ["shotgun_p4_m1"] = "receiver",
+    ["ogryn_gauntlet_p1_m1"] = "body",
+    ["ogryn_heavystubber_p1_m1"] = "receiver",
+    ["ogryn_heavystubber_p2_m1"] = "receiver",
+    ["ogryn_rippergun_p1_m1"] = "receiver",
+    ["ogryn_thumper_p1_m1"] = "body",
 }
 
 local icon_render_unit_rotation_offset_val = {90, 0, 30}
