@@ -3,7 +3,7 @@
 - New weapons from Hive Scum and Skitarii
 - DMF Metadata
 ## Fixed
-- Missing parents
+- Missing parents. Sights now default to rail since pretty much everyone has that
 
 # 2026-05-08
 v2.1.1
