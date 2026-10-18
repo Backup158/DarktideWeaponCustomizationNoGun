@@ -26,7 +26,7 @@ jobs:
           api_key: ${{ secrets.NEXUSMODS_API_KEY }}
           file_id: ${{ vars.NEXUSMODS_FILE_ID }}
           filename: extended_weapon_customization_no_gun.zip
-          display_name: "Extended Weapon Customization - Hidden Viewmodels While Aiming"
+          display_name: "EWC - Hidden Viewmodels While Aiming"
           description: "https://backup158.github.io/DarktideWeaponCustomizationNoGun/CHANGELOG"
           # changelog: "https://backup158.github.io/DarktideWeaponCustomizationNoGun/CHANGELOG"
           version: ${{ github.event.release.tag_name || github.event.inputs.version }}
