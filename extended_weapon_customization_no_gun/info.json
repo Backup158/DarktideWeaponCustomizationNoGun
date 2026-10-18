@@ -1,0 +1,13 @@
+{
+    "name": "Extended Weapon Customization - Hidden Viewmodels While Aiming",
+    "author": "Backup158",
+    "version": "2.2.0",
+    "homepage": "https://www.nexusmods.com/warhammer40kdarktide/mods/461",
+    "source": "https://github.com/Backup158/DarktideWeaponCustomizationNoGun",
+    "description": "Extended Weapon Customization plugin adding options to move the weapon off screen.",
+    "order": {
+        "require": ["extended_weapon_customization"],
+        "load_before": ["extended_weapon_customization"]
+    },
+    "localization": {}
+}
