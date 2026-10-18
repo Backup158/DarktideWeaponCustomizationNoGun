@@ -46,12 +46,15 @@ local attachments_table_for_ewc = {
 -- Returns names of ranged weapons
 local ranged_weapons = {
     human = {
+        "arc_rifle_p1_m1",
         "autogun_p1_m1", -- Infantry
         "autogun_p2_m1", -- Braced
         "autogun_p3_m1", -- Vigilant
         "autopistol_p1_m1",
         "bolter_p1_m1",
         "boltpistol_p1_m1",
+        "dual_autopistols_p1_m1",
+        "dual_stubpistols_p1_m1",
         "flamer_p1_m1",
         "galvanic_rifle_p1_m1",
         "lasgun_p1_m1", -- Infantry
@@ -63,7 +66,7 @@ local ranged_weapons = {
         "plasmagun_p1_m1",
         "shotgun_p1_m1", -- Combat
         "shotgun_p2_m1", -- Double Barrel
-        "shotgun_p1_m3", -- Huntsman's
+        "shotgun_p3_m1", -- Huntsman's
         "shotgun_p4_m1", -- Exterminator
         "shotpistol_shield_p1_m1",
         "stubrevolver_p1_m1",
@@ -75,6 +78,9 @@ local ranged_weapons = {
         "ogryn_rippergun_p1_m1",
         "ogryn_thumper_p1_m1", -- Kickback and Rumbler and Thugshot
     },
+}
+local parent_attachment_slot_override = {
+
 }
 
 local icon_render_unit_rotation_offset_val = {90, 0, 30}
@@ -270,7 +276,7 @@ for breed_type, weapons_list in pairs(ranged_weapons) do
         -- Adding attachment slot to weapon
         if not attachments_table_for_ewc.attachment_slots[weapon_name] then attachments_table_for_ewc.attachment_slots[weapon_name] = {} end
         attachments_table_for_ewc.attachment_slots[weapon_name][aim_style_slot_name] = {
-            parent_slot = "receiver", -- parent_attachment_slot_override[weapon_name] or
+            parent_slot = parent_attachment_slot_override[weapon_name] or "rail",
             default_path = _item_empty_trinket,
             fix = {
                 offset = {
